@@ -1,0 +1,61 @@
+#spring:
+#  application:
+#    name: provider-hello
+#server:
+#  port: 8001
+#
+##服务注册
+#eureka:
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:7001/eureka/
+server:
+  port: 8001
+
+info:
+  app:
+    name: provider-hello111
+    version: 1.0.0
+
+
+spring:
+  application:
+    name: provider-hello
+  datasource:
+    type:
+      com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/spring_cloud_study?useUnicode=true&characterEncoding=utf8&&useSSL=false&autoReconnect=true
+    password: root
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    dbcp2:
+      min-idle: 5
+      max-idle: 50
+      initial-size: 15
+      max-wait-millis: 2000
+
+mybatis:
+    type-aliases-package: com.soft1851.cloud.study
+    configuration:
+      map-underscore-to-camel-case: true
+
+eureka:
+  instance:
+    hostname: kuzma.com
+    prefer-ip-address: true
+
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:7001/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true

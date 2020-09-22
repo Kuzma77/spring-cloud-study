@@ -1,0 +1,49 @@
+#server:
+#  port: 7001
+#eureka:
+#  client:
+#    # 是否要注册到其它Eureka Server实例
+#    register-with-eureka: false
+#    # 是否要从其它Eureka Server实例获取数据
+#    fetch-registry: false
+#    service-url:
+#      defaultZone: http://localhost:7001/eureka/
+
+server:
+  port: 7001
+
+info:
+  app:
+    name: eureka-server
+
+spring:
+  application:
+    name: eureka-server
+  datasource:
+    type:
+      com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/spring_cloud_study?useUnicode=true&characterEncoding=utf8&&useSSL=false&autoReconnect=true
+    password: root
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    dbcp2:
+      min-idle: 5
+      max-idle: 50
+      initial-size: 15
+      max-wait-millis: 2000
+
+  mybatis:
+    type-aliases-package: com.soft1851.cloud.study
+    configuration:
+      map-underscore-to-camel-case: true
+
+eureka:
+  instance:
+    hostname: kuzma.com
+    prefer-ip-address: true
+
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
