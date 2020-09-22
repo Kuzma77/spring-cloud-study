@@ -12,6 +12,7 @@
     <artifactId>user-center</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>user-center</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -59,6 +60,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--            整合spring cloud-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -66,12 +68,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--            整合spring cloud alibaba-->
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependence</artifactId>
-                <version>2.1.1.BUILD-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2.2.3.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: content-center
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 101.200.82.237:8848
+
