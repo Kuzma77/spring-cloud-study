@@ -2,6 +2,9 @@ package com.soft1851.springboot.contentcenter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class ContentCenterApplication {
@@ -10,4 +13,9 @@ public class ContentCenterApplication {
         SpringApplication.run(ContentCenterApplication.class, args);
     }
 
+    @LoadBalanced
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
 }

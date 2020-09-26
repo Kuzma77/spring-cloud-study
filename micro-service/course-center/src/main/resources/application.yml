@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8089
 
 spring:
   application:
@@ -17,6 +17,12 @@ spring:
       connection-timeout: 30000
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  main:
+    allow-bean-definition-overriding: true
 
 
 
