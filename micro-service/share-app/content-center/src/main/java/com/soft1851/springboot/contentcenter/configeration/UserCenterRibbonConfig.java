@@ -11,7 +11,7 @@ import ribbonconfig.RibbonConfiguration;
  * @Data 2020/9/25
  */
 @Configuration
-//@RibbonClient(name = "user-center",configuration = RibbonConfiguration.class)
+@RibbonClient(name = "user-center",configuration = RibbonConfiguration.class)
 //@RibbonClients(defaultConfiguration = RibbonConfiguration.class)
 public class UserCenterRibbonConfig {
 }

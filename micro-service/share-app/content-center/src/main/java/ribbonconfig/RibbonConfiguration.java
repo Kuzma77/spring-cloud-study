@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @description TODO
  * @Data 2020/9/25
  */
-//@Configuration
+@Configuration
 public class RibbonConfiguration {
     @Bean
     public IRule ribbonRule(){
