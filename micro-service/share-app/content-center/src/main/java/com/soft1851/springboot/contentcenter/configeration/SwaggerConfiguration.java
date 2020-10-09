@@ -27,7 +27,7 @@ public class SwaggerConfiguration {
     private ApiInfo apiInfo(){
         return new ApiInfo(
                 "share-app Swagger接口文档",
-                "github地址：https:*****",
+                "github地址：https://github.com/Kuzma77",
                 "API V1.0",
                 "Terms of service",
                 new Contact("裤子马","","26733272666@qq,com"),

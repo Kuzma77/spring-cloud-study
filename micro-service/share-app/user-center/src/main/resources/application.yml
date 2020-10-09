@@ -27,7 +27,7 @@ spring:
           instance: cc
           version: 1.0
 server:
-  port: 8082
+  port: 8083
 management:
   endpoints:
     web:
@@ -36,3 +36,6 @@ management:
   endpoint:
     health:
       show-details: always
+
+rocketmq:
+  name-server: 101.200.82.237:9876

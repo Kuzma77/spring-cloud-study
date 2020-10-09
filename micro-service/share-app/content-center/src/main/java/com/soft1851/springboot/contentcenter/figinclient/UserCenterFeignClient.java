@@ -1,10 +1,10 @@
 package com.soft1851.springboot.contentcenter.figinclient;
 
 import com.soft1851.springboot.contentcenter.configeration.UserCenterFeignConfiguration;
+import com.soft1851.springboot.contentcenter.domain.dto.UserAddBonusMsgDto;
 import com.soft1851.springboot.contentcenter.domain.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wl_sun
@@ -22,4 +22,13 @@ public interface UserCenterFeignClient {
      */
     @GetMapping("/user/{id}")
     UserDto findUserById(@PathVariable Integer id);
+
+
+    /**
+     * 加积分
+     * @param userAddBonusMsgDto
+     * @return
+     */
+    @RequestMapping(value = "/user/addBonus", method = RequestMethod.POST)
+    UserAddBonusMsgDto addBonusById(@RequestBody UserAddBonusMsgDto userAddBonusMsgDto);
 }

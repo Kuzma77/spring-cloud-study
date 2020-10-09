@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author wl_sun
@@ -28,9 +29,9 @@ public class UserDto {
 
     private String avatarUrl;
 
-    private Timestamp createTime;
+    private Date createTime;
 
-    private Timestamp updateTime;
+    private Date updateTime;
 
     private Integer bonus;
 }

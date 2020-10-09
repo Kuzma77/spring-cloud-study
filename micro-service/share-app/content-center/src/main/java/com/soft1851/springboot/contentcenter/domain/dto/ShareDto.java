@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author wl_sun
@@ -36,12 +38,12 @@ public class ShareDto {
     /**
      * 创建时间
      */
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    private Timestamp updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 是否原创 0:否 1:是

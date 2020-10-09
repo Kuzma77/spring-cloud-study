@@ -1,11 +1,9 @@
 package com.soft1851.springboot.usercenter.service;
 
-import com.soft1851.springboot.usercenter.domain.dto.UserDto;
+
+import com.soft1851.springboot.usercenter.domain.dto.UserAddBonusMsgDto;
 import com.soft1851.springboot.usercenter.domain.entity.User;
-import com.soft1851.springboot.usercenter.mapper.UserMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 /**
  * @author wl_sun
@@ -16,9 +14,16 @@ public interface UserService {
 
 
     /**
-     * 根据id获得用户详情
+      * 根据id获得用户详情
      * @param id
      * @return
      */
     User findById(Integer id);
+
+    /**
+     * 根据id给用户加积分
+     * @param userAddBonusMsgDto
+     * @return
+     */
+    User addBonusById(UserAddBonusMsgDto userAddBonusMsgDto);
 }

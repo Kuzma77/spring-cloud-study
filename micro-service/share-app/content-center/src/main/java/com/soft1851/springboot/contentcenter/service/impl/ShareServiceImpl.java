@@ -2,8 +2,8 @@ package com.soft1851.springboot.contentcenter.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.soft1851.springboot.contentcenter.domain.dto.ShareDto;
-import com.soft1851.springboot.contentcenter.domain.dto.UserDto;
+import com.soft1851.springboot.contentcenter.domain.AuditStatusEnum;
+import com.soft1851.springboot.contentcenter.domain.dto.*;
 import com.soft1851.springboot.contentcenter.domain.entity.MidUserShare;
 import com.soft1851.springboot.contentcenter.domain.entity.Share;
 import com.soft1851.springboot.contentcenter.figinclient.UserCenterFeignClient;
@@ -11,13 +11,18 @@ import com.soft1851.springboot.contentcenter.mapper.MidUserShareMapper;
 import com.soft1851.springboot.contentcenter.mapper.ShareMapper;
 import com.soft1851.springboot.contentcenter.service.ShareService;
 import lombok.RequiredArgsConstructor;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +37,7 @@ public class ShareServiceImpl implements ShareService {
     private final ShareMapper shareMapper;
     private final UserCenterFeignClient userCenterFeignClient;
     private final MidUserShareMapper midUserShareMapper;
+    private final RocketMQTemplate rocketMQTemplate;
 
     @Override
     public ShareDto findById(Integer id) {
@@ -95,6 +101,67 @@ public class ShareServiceImpl implements ShareService {
 
         }
         return new PageInfo<>(sharesDeal);
+    }
+
+    @Override
+    public Share contributeShare(ContributeShareDto contributeShareDto) {
+        Share share = Share.builder()
+                .userId(contributeShareDto.getUserId())
+                .title(contributeShareDto.getTitle())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .isOriginal(contributeShareDto.getIsOriginal())
+                .author(contributeShareDto.getAuthor())
+                .cover(contributeShareDto.getCover())
+                .summary(contributeShareDto.getSummary())
+                .price(contributeShareDto.getPrice())
+                .downloadUrl(contributeShareDto.getDownloadUrl())
+                .buyCount(0)
+                .showFlag(false)
+                .auditStatus("NOT_YET")
+                .reason(contributeShareDto.getReason())
+                .build();
+        shareMapper.insert(share);
+        return share;
+    }
+
+    @Override
+    public Share auditStatusById(Integer id,AuditStatusDto auditStatusDto) {
+        //1、查询share是否存在，不存在或者当前aduit_status ！= NOT_YET,那么抛异常
+        Share share = this.shareMapper.selectByPrimaryKey(id);
+        if (share == null){
+            throw new  IllegalArgumentException("参数非法！该分享不存在");
+        }
+        if(!Objects.equals("NOT_YET",share.getAuditStatus())){
+            throw new  IllegalArgumentException("参数非法！该分享已审核通过或者审核不通过！");
+        }
+
+        //2、审核资源，将状态改为PASS或者REJECT
+        //这个API主要流程是审核，所以不需要等更新积分的结果返回，可以将加积分改为异步
+        share.setReason(auditStatusDto.getReason());
+        share.setAuditStatus(auditStatusDto.getAuditStatusEnum().toString());
+        this.shareMapper.updateByPrimaryKey(share);
+
+        //3如果是PASS，那么发送消息给rocketmq。让用户中心去消费，并为发布人添加积分
+//        if(AuditStatusEnum.PASSED.equals(auditStatusDto.getAuditStatusEnum())){
+//            this.rocketMQTemplate.convertAndSend(
+//                    "add-bonus",
+//                    UserAddBonusMsgDto.builder()
+//                    .userId(share.getUserId())
+//                    .bonus(50)
+//                    .build()
+//            );
+//        }
+
+        //通过feign调用
+        if(AuditStatusEnum.PASSED.equals(auditStatusDto.getAuditStatusEnum())){
+            UserAddBonusMsgDto userAddBonusMsgDto = UserAddBonusMsgDto.builder()
+                    .userId(share.getUserId())
+                    .bonus(50)
+                    .build();
+            userCenterFeignClient.addBonusById(userAddBonusMsgDto);
+        }
+        return share;
     }
 
 

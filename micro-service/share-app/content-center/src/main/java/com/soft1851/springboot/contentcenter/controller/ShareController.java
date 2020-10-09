@@ -1,5 +1,7 @@
 package com.soft1851.springboot.contentcenter.controller;
 
+import com.soft1851.springboot.contentcenter.domain.dto.AuditStatusDto;
+import com.soft1851.springboot.contentcenter.domain.dto.ContributeShareDto;
 import com.soft1851.springboot.contentcenter.domain.dto.ShareDto;
 import com.soft1851.springboot.contentcenter.domain.dto.UserDto;
 import com.soft1851.springboot.contentcenter.domain.entity.Share;
@@ -46,4 +48,12 @@ public class ShareController {
         }
         return this.shareService.query(title,pageNo,pageSize,userId).getList();
     }
+
+    @PostMapping(value = "/share/contribute")
+    @ApiOperation(value = "分享投稿", notes = "分享投稿")
+    public Share contributeShare(ContributeShareDto contributeShareDto){
+        return shareService.contributeShare(contributeShareDto);
+    }
+
+
 }
