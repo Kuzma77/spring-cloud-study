@@ -1,5 +1,7 @@
 package com.soft1851.springboot.usercenter.controller;
 
+import com.soft1851.springboot.usercenter.domain.dto.LoginDto;
+import com.soft1851.springboot.usercenter.domain.dto.LoginResDto;
 import com.soft1851.springboot.usercenter.domain.dto.UserAddBonusMsgDto;
 import com.soft1851.springboot.usercenter.domain.dto.UserDto;
 import com.soft1851.springboot.usercenter.domain.entity.User;
@@ -39,5 +41,15 @@ public class UserController {
          userService.addBonusById(userAddBonusMsgDto);
         System.out.println("通过feign调用加积分");
          return userAddBonusMsgDto;
+    }
+
+    @PostMapping(value = "/login")
+    public LoginResDto getUser(@RequestBody LoginDto loginDto){
+        System.out.println(loginDto);
+        User user = userService.login(loginDto);
+        return LoginResDto.builder()
+                .user(user)
+                .token("1234560")
+                .build();
     }
 }

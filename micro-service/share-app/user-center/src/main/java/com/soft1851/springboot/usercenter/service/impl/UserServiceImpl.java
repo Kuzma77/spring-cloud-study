@@ -1,5 +1,6 @@
 package com.soft1851.springboot.usercenter.service.impl;
 
+import com.soft1851.springboot.usercenter.domain.dto.LoginDto;
 import com.soft1851.springboot.usercenter.domain.dto.UserAddBonusMsgDto;
 import com.soft1851.springboot.usercenter.domain.entity.BonusEventLog;
 import com.soft1851.springboot.usercenter.domain.entity.User;
@@ -11,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author wl_sun
@@ -47,5 +50,29 @@ public class UserServiceImpl implements UserService {
                 .description("投稿加积分")
                 .build());
         return user;
+    }
+
+    @Override
+    public User login(LoginDto loginDto) {
+        //先根据wxId查找用户
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("wxId",loginDto.getWxId());
+        List<User> users = this.userMapper.selectByExample(example);
+        //没找到用户，是新用户，直接注册
+        if (users.size() == 0){
+            User saveUser = User.builder()
+                    .wxId(loginDto.getWxId())
+                    .avatarUrl(loginDto.getAvatar())
+                    .wxNickName(loginDto.getWxNickName())
+                    .roles("user")
+                    .bonus(188)
+                    .createTime(LocalDateTime.now())
+                    .updateTime(LocalDateTime.now())
+                    .build();
+            this.userMapper.insertSelective(saveUser);
+            return saveUser;
+        }
+        return users.get(0);
     }
 }
