@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class LoginResDto {
-    private User user;
-    private String token;
+public class LoginRespDto {
+    private UserRespDto user;
+    private JwtTokenRespDto token;
 }

@@ -57,13 +57,13 @@ public class UserServiceImpl implements UserService {
         //先根据wxId查找用户
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("wxId",loginDto.getWxId());
+        criteria.andEqualTo("wxId",loginDto.getOpenId());
         List<User> users = this.userMapper.selectByExample(example);
         //没找到用户，是新用户，直接注册
         if (users.size() == 0){
             User saveUser = User.builder()
-                    .wxId(loginDto.getWxId())
-                    .avatarUrl(loginDto.getAvatar())
+                    .wxId(loginDto.getOpenId())
+                    .avatarUrl(loginDto.getAvatarUrl())
                     .wxNickName(loginDto.getWxNickName())
                     .roles("user")
                     .bonus(188)

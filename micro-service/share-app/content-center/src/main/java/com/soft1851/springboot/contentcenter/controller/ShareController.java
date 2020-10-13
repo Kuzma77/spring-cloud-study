@@ -1,14 +1,18 @@
 package com.soft1851.springboot.contentcenter.controller;
 
+import com.alibaba.csp.sentinel.util.StringUtil;
 import com.soft1851.springboot.contentcenter.domain.dto.AuditStatusDto;
 import com.soft1851.springboot.contentcenter.domain.dto.ContributeShareDto;
 import com.soft1851.springboot.contentcenter.domain.dto.ShareDto;
 import com.soft1851.springboot.contentcenter.domain.dto.UserDto;
 import com.soft1851.springboot.contentcenter.domain.entity.Share;
 import com.soft1851.springboot.contentcenter.service.ShareService;
+import com.soft1851.springboot.contentcenter.util.JwtOperator;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +25,7 @@ import java.util.List;
  * @description TODO
  * @Data 2020/9/28
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/share")
 @Api(tags = "分享接口",value = "提供分享相关的Rest API")
@@ -28,6 +33,7 @@ import java.util.List;
 public class ShareController {
 
     private final ShareService shareService;
+    private final JwtOperator jwtOperator;
    // private final RestTemplate restTemplate;
 
     @GetMapping(value = "/{id}")
@@ -42,9 +48,18 @@ public class ShareController {
         @RequestParam(required = false) String title,
         @RequestParam(required = false,defaultValue = "1") Integer pageNo,
         @RequestParam(required = false,defaultValue = "10") Integer pageSize,
-        @RequestParam(required = false) Integer userId) throws Exception{
+        @RequestHeader(value = "X-Token",required = false) String token){
         if(pageSize > 100){
             pageSize = 100;
+        }
+        Integer userId = null;
+        if (StringUtil.isNotBlank(token)){
+            System.out.println(token);
+            Claims claims = this.jwtOperator.getClaimsFromToken(token);
+            log.info(claims.toString());
+            userId = (Integer)claims.get("id");
+        }else {
+            log.info("没有token");
         }
         return this.shareService.query(title,pageNo,pageSize,userId).getList();
     }

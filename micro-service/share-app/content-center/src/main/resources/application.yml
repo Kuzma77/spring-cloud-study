@@ -20,8 +20,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 101.200.82.237:8848
-#        server-addr: localhost:8848
+#        server-addr: 101.200.82.237:8848
+        server-addr: localhost:8848
 #        namespace: a2b425a7-92b5-494a-941f-bbfab80e9959
     sentinel:
       transport:
@@ -51,12 +51,24 @@ logging:
   level:
     com.soft1851.springboot.contentcenter.figinclient.UserCenterFeignClient: debug
 
-#feign:
-#  client:
-#    config:
-#      user-center:
-#        loggerLevel: full
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        loggerLevel: full
+        requestInterceptors:
+          - com.soft1851.springboot.contentcenter.figinclient.interceptor.TokenInterceptor
+  httpclient:
+    enable: true
+    max-connections: 200
+    max-connections-per-route: 50
 rocketmq:
   name-server: 101.200.82.237:9876
   producer:
     group: test-group
+
+jwt:
+  secret: aaaaaaabbbbbbcccccdddddaaaaaaabbbbbbcccccdddddaaaaaaabbbbbbcccccddddd
+  expire-time-in-second: 1209600
