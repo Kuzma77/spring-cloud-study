@@ -135,7 +135,6 @@ public class ShareServiceImpl implements ShareService {
         if(!Objects.equals("NOT_YET",share.getAuditStatus())){
             throw new  IllegalArgumentException("参数非法！该分享已审核通过或者审核不通过！");
         }
-
         //2、审核资源，将状态改为PASS或者REJECT
         //这个API主要流程是审核，所以不需要等更新积分的结果返回，可以将加积分改为异步
         share.setReason(auditStatusDto.getReason());
@@ -162,6 +161,17 @@ public class ShareServiceImpl implements ShareService {
             userCenterFeignClient.addBonusById(userAddBonusMsgDto);
         }
         return share;
+    }
+
+    @Override
+    public PageInfo<Share> queryMyContribute(Integer pageNo, Integer pageSize, Integer userId) {
+        //启动分页
+        PageHelper.startPage(pageNo,pageSize);
+        //构造查询实例
+        Example example = new Example(Share.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId",userId);
+        return new PageInfo<>(this.shareMapper.selectByExample(example));
     }
 
 

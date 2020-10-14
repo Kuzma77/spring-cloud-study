@@ -53,4 +53,13 @@ public interface ShareService {
      * @return
      */
     Share auditStatusById(Integer id,AuditStatusDto auditStatusDto);
+
+    /**
+     * 根据用户查询我的投稿列表
+     * @param pageNo
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    PageInfo<Share> queryMyContribute(Integer pageNo,Integer pageSize,Integer userId);
 }

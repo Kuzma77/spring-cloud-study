@@ -53,11 +53,12 @@ public class ShareController {
             pageSize = 100;
         }
         Integer userId = null;
-        if (StringUtil.isNotBlank(token)){
-            System.out.println(token);
+        if (!"no-token".equals(token)){
+//            System.out.println(token);
             Claims claims = this.jwtOperator.getClaimsFromToken(token);
             log.info(claims.toString());
             userId = (Integer)claims.get("id");
+            System.out.println(userId);
         }else {
             log.info("没有token");
         }
@@ -70,5 +71,16 @@ public class ShareController {
         return shareService.contributeShare(contributeShareDto);
     }
 
+    @GetMapping(value = "/query/myContribution")
+    @ApiOperation(value = "我的分享列表",notes = "我的分享列表")
+    public List<Share> query(
+            @RequestParam(required = false,defaultValue = "1") Integer pageNo,
+            @RequestParam(required = false,defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) Integer userId) {
+        if (pageSize > 100) {
+            pageSize = 100;
+        }
+        return this.shareService.queryMyContribute(pageNo,pageSize,userId).getList();
+    }
 
 }
