@@ -26,7 +26,7 @@ public interface UserService {
      * @param userAddBonusMsgDto
      * @return
      */
-    User addBonusById(UserAddBonusMsgDto userAddBonusMsgDto);
+    void addBonusById(UserAddBonusMsgDto userAddBonusMsgDto);
 
     /**
      * 登录
@@ -34,6 +34,7 @@ public interface UserService {
      * @return
      */
     User login(LoginDto loginDto);
+
 
 
 

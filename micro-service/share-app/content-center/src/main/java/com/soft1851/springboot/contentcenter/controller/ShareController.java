@@ -1,10 +1,8 @@
 package com.soft1851.springboot.contentcenter.controller;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
-import com.soft1851.springboot.contentcenter.domain.dto.AuditStatusDto;
-import com.soft1851.springboot.contentcenter.domain.dto.ContributeShareDto;
-import com.soft1851.springboot.contentcenter.domain.dto.ShareDto;
-import com.soft1851.springboot.contentcenter.domain.dto.UserDto;
+import com.soft1851.springboot.contentcenter.auth.CheckLogin;
+import com.soft1851.springboot.contentcenter.domain.dto.*;
 import com.soft1851.springboot.contentcenter.domain.entity.Share;
 import com.soft1851.springboot.contentcenter.service.ShareService;
 import com.soft1851.springboot.contentcenter.util.JwtOperator;
@@ -81,6 +79,13 @@ public class ShareController {
             pageSize = 100;
         }
         return this.shareService.queryMyContribute(pageNo,pageSize,userId).getList();
+    }
+
+    @PostMapping("/exchange")
+    @ApiOperation(value = "兑换分享资源",notes = "兑换分享资源")
+    public Share exchange(@RequestBody ExchangeDto exchangeDto) {
+        System.out.println(exchangeDto + ">>>>>>>>>>>>");
+        return this.shareService.exchange(exchangeDto);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.soft1851.springboot.contentcenter.figinclient;
 
 import com.soft1851.springboot.contentcenter.configeration.UserCenterFeignConfiguration;
+import com.soft1851.springboot.contentcenter.domain.dto.ResponseDto;
 import com.soft1851.springboot.contentcenter.domain.dto.UserAddBonusMsgDto;
 import com.soft1851.springboot.contentcenter.domain.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -20,8 +21,8 @@ public interface UserCenterFeignClient {
      * @param id
      * @return UserDTO
      */
-    @GetMapping("/user/{id}")
-    UserDto findUserById(@PathVariable Integer id);
+    @GetMapping("/user")
+    ResponseDto findUserById(@RequestParam Integer id);
 
 
     /**

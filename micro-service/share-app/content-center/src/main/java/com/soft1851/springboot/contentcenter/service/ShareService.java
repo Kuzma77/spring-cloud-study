@@ -3,6 +3,7 @@ package com.soft1851.springboot.contentcenter.service;
 import com.github.pagehelper.PageInfo;
 import com.soft1851.springboot.contentcenter.domain.dto.AuditStatusDto;
 import com.soft1851.springboot.contentcenter.domain.dto.ContributeShareDto;
+import com.soft1851.springboot.contentcenter.domain.dto.ExchangeDto;
 import com.soft1851.springboot.contentcenter.domain.dto.ShareDto;
 import com.soft1851.springboot.contentcenter.domain.entity.Share;
 import com.soft1851.springboot.contentcenter.mapper.ShareMapper;
@@ -62,4 +63,21 @@ public interface ShareService {
      * @return
      */
     PageInfo<Share> queryMyContribute(Integer pageNo,Integer pageSize,Integer userId);
+
+    /**
+     * 积分兑换资源
+     *
+     * @param exchangeDto
+     * @return Share
+     */
+    Share exchange(ExchangeDto exchangeDto);
+
+    /**
+     * 根据用户id查询我的兑换
+     * @param pageNo
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    PageInfo<Share> queryMyExchange(Integer pageNo,Integer pageSize,Integer userId);
 }

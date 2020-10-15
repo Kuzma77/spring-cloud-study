@@ -36,21 +36,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addBonusById(UserAddBonusMsgDto userAddBonusMsgDto) {
-        User user = userMapper.selectByPrimaryKey(userAddBonusMsgDto.getUserId());
-        user.setBonus(user.getBonus() + userAddBonusMsgDto.getBonus());
+    public void addBonusById(UserAddBonusMsgDto userAddBonusMsgDto) {
+//        User user = userMapper.selectByPrimaryKey(userAddBonusMsgDto.getUserId());
+//        user.setBonus(user.getBonus() + userAddBonusMsgDto.getBonus());
+//        this.userMapper.updateByPrimaryKeySelective(user);
+//
+//        //2、写积分日志
+//        this.bonusEventLogMapper.insert(BonusEventLog.builder()
+//                .userId(user.getId())
+//                .value(userAddBonusMsgDto.getBonus())
+//                .event("CONTRIBUTE")
+//                .createTime(LocalDateTime.now())
+//                .description("投稿加积分")
+//                .build());
+//        return user;
+        System.out.println(userAddBonusMsgDto);
+        // 1. 为用户加积分
+        Integer userId = userAddBonusMsgDto.getUserId();
+        Integer bonus = userAddBonusMsgDto.getBonus();
+        User user = this.userMapper.selectByPrimaryKey(userId);
+
+        user.setBonus(user.getBonus() + bonus);
         this.userMapper.updateByPrimaryKeySelective(user);
 
-        //2、写积分日志
-        this.bonusEventLogMapper.insert(BonusEventLog.builder()
-                .userId(user.getId())
-                .value(userAddBonusMsgDto.getBonus())
-                .event("CONTRIBUTE")
-                .createTime(LocalDateTime.now())
-                .description("投稿加积分")
-                .build());
-        return user;
+        // 2. 记录日志到bonus_event_log表里面
+        this.bonusEventLogMapper.insert(
+                BonusEventLog.builder()
+                        .userId(userId)
+                        .value(bonus)
+                        .event(userAddBonusMsgDto.getEvent())
+                        .createTime(LocalDateTime.now())
+                        .description(userAddBonusMsgDto.getDescription())
+                        .build()
+        );
+        log.info("积分添加完毕...");
     }
+
 
     @Override
     public User login(LoginDto loginDto) {

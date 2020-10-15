@@ -5,6 +5,8 @@ import com.soft1851.springboot.usercenter.domain.dto.*;
 import com.soft1851.springboot.usercenter.domain.entity.User;
 import com.soft1851.springboot.usercenter.service.UserService;
 import com.soft1851.springboot.usercenter.util.JwtOperator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping(value = "/user")
+@Api(tags = "用户接口",value = "提供用户相关的Rest API")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
@@ -28,8 +31,9 @@ public class UserController {
     private final JwtOperator jwtOperator;
 
 
-    @GetMapping(value = "/{id}")
-    public User findUserById(@PathVariable Integer id){
+    @GetMapping
+    @ApiOperation(value = "根据用户id查询用户",notes = "根据用户id查询用户")
+    public User findUserById(@RequestParam Integer id){
         log.info("我被调用了....");
         return userService.findById(id);
     }
@@ -40,13 +44,22 @@ public class UserController {
     }
 
     @PostMapping("/addBonus")
-    public UserAddBonusMsgDto addBonusById(@RequestBody  UserAddBonusMsgDto userAddBonusMsgDto){
-         userService.addBonusById(userAddBonusMsgDto);
-        System.out.println("通过feign调用加积分");
-         return userAddBonusMsgDto;
+    @ApiOperation(value = "根据用户id加积分",notes = "根据用户id加积分")
+    public User addBonusById(@RequestBody  UserAddBonusMsgDto userAddBonusMsgDto){
+        Integer userId = userAddBonusMsgDto.getUserId();
+        userService.addBonusById(
+                UserAddBonusMsgDto.builder()
+                        .userId(userId)
+                        .bonus(userAddBonusMsgDto.getBonus())
+                        .description(userAddBonusMsgDto.getDescription())
+                        .event(userAddBonusMsgDto.getEvent())
+                        .build()
+        );
+        return this.userService.findById(userId);
     }
 
     @PostMapping(value = "/login")
+    @ApiOperation(value = "登录",notes = "登录")
     public LoginRespDto getUser(@RequestBody LoginDto loginDto){
         User user = this.userService.login(loginDto);
         //颁发token
