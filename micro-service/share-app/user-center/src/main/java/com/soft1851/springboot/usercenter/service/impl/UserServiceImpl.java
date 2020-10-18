@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
                         .userId(userId)
                         .value(bonus)
                         .event(userAddBonusMsgDto.getEvent())
-                        .createTime(LocalDateTime.now())
+                        .createTime(new Date())
                         .description(userAddBonusMsgDto.getDescription())
                         .build()
         );
@@ -88,12 +89,14 @@ public class UserServiceImpl implements UserService {
                     .wxNickName(loginDto.getWxNickName())
                     .roles("user")
                     .bonus(188)
-                    .createTime(LocalDateTime.now())
-                    .updateTime(LocalDateTime.now())
+                    .createTime(new Date())
+                    .updateTime(new Date())
                     .build();
             this.userMapper.insertSelective(saveUser);
             return saveUser;
         }
         return users.get(0);
     }
+
+
 }

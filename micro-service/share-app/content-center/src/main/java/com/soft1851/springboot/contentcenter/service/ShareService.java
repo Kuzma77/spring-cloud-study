@@ -80,4 +80,14 @@ public interface ShareService {
      * @return
      */
     PageInfo<Share> queryMyExchange(Integer pageNo,Integer pageSize,Integer userId);
+
+
+    /**
+     * 编辑投稿
+     * @param shareDto
+     * @return
+     */
+    int updateContribute(Share share);
+
+
 }

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author wl_sun
@@ -42,10 +43,10 @@ public class User {
     private String avatarUrl;
 
     @Column(name = "create_time")
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     @Column(name = "bonus")
     private Integer bonus;

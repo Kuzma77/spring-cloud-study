@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author wl_sun
@@ -44,12 +45,12 @@ public class Share {
     @Column(name = "create_time")
     @ApiModelProperty(name = "createTime",value = "创建时间")
     @JsonFormat(locale = "zh", timezone = "GMT+8" , pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @Column(name = "update_time")
     @ApiModelProperty(name = "updateTime",value = "修改时间")
     @JsonFormat(locale = "zh", timezone = "GMT+8" , pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     @Column(name = "is_original")
     @ApiModelProperty(name = "isOriginal",value = "是否原创 0:否 1:是")

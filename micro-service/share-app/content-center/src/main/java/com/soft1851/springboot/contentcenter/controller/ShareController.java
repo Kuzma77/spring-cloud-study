@@ -63,15 +63,15 @@ public class ShareController {
         return this.shareService.query(title,pageNo,pageSize,userId).getList();
     }
 
-    @PostMapping(value = "/share/contribute")
+    @PostMapping(value = "/contribute")
     @ApiOperation(value = "分享投稿", notes = "分享投稿")
-    public Share contributeShare(ContributeShareDto contributeShareDto){
+    public Share contributeShare(@RequestBody ContributeShareDto contributeShareDto){
         return shareService.contributeShare(contributeShareDto);
     }
 
-    @GetMapping(value = "/query/myContribution")
+    @GetMapping(value = "/query/contribution")
     @ApiOperation(value = "我的分享列表",notes = "我的分享列表")
-    public List<Share> query(
+    public List<Share> queryContribution(
             @RequestParam(required = false,defaultValue = "1") Integer pageNo,
             @RequestParam(required = false,defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) Integer userId) {
@@ -88,4 +88,21 @@ public class ShareController {
         return this.shareService.exchange(exchangeDto);
     }
 
+    @GetMapping(value = "/query/exchange")
+    @ApiOperation(value = "我的兑换列表",notes = "我的兑换列表")
+    public List<Share> queryExchange(
+            @RequestParam(required = false,defaultValue = "1") Integer pageNo,
+            @RequestParam(required = false,defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) Integer userId) {
+        if (pageSize > 100) {
+            pageSize = 100;
+        }
+        return this.shareService.queryMyExchange(pageNo, pageSize, userId).getList();
+    }
+
+    @PostMapping(value = "/update/contribute")
+    @ApiOperation(value = "编辑我的兑换",notes = "编辑我的兑换")
+    public int updateContribute(@RequestBody Share share){
+        return this.shareService.updateContribute(share);
+    }
 }

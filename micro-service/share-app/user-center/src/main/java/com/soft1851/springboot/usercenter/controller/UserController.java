@@ -2,6 +2,7 @@ package com.soft1851.springboot.usercenter.controller;
 
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.soft1851.springboot.usercenter.domain.dto.*;
+import com.soft1851.springboot.usercenter.domain.entity.BonusEventLog;
 import com.soft1851.springboot.usercenter.domain.entity.User;
 import com.soft1851.springboot.usercenter.service.UserService;
 import com.soft1851.springboot.usercenter.util.JwtOperator;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,4 +91,6 @@ public class UserController {
                 .build())
                 .build();
     }
+
+
 }

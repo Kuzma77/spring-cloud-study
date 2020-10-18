@@ -1,4 +1,4 @@
-package com.soft1851.springboot.usercenter.domain.entity;
+package com.soft1851.springboot.contentcenter.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,38 +8,29 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
  * @author wl_sun
  * @description TODO
- * @Data 2020/10/8
+ * @Data 2020/10/15
  */
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "bonus_event_log")
-public class BonusEventLog {
-
-    @Id
-    @GeneratedValue(generator = "JDBC")
+public class BonusEventLogDto {
     private Integer id;
 
-    @Column(name = "user_id")
+
     private Integer userId;
 
-    @Column(name = "value")
     private Integer value;
 
-    @Column(name = "event")
     private String event;
 
-    @Column(name = "create_time")
     private Date createTime;
 
-    @Column(name = "description")
     private String description;
 }

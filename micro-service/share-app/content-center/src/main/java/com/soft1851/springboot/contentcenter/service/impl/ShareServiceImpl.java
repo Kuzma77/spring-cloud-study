@@ -115,8 +115,8 @@ public class ShareServiceImpl implements ShareService {
         Share share = Share.builder()
                 .userId(contributeShareDto.getUserId())
                 .title(contributeShareDto.getTitle())
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
+                .createTime(new Date())
+                .updateTime(new Date())
                 .isOriginal(contributeShareDto.getIsOriginal())
                 .author(contributeShareDto.getAuthor())
                 .cover(contributeShareDto.getCover())
@@ -124,7 +124,7 @@ public class ShareServiceImpl implements ShareService {
                 .price(contributeShareDto.getPrice())
                 .downloadUrl(contributeShareDto.getDownloadUrl())
                 .buyCount(0)
-                .showFlag(false)
+                .showFlag(true)
                 .auditStatus("NOT_YET")
                 .reason(contributeShareDto.getReason())
                 .build();
@@ -240,21 +240,29 @@ public class ShareServiceImpl implements ShareService {
 
     @Override
     public PageInfo<Share> queryMyExchange(Integer pageNo, Integer pageSize, Integer userId) {
-        //启动分页
-        PageHelper.startPage(pageNo,pageSize);
         //构造查询实例
         Example example = new Example(Share.class);
         Example.Criteria criteria = example.createCriteria();
+        example.setOrderByClause("id DESC");
         criteria.andEqualTo("userId",userId);
+        System.out.println(userId);
         List<MidUserShare> midUserShares = this.midUserShareMapper.selectByExample(example);
         List<Share> shares = new ArrayList<>();
         midUserShares.forEach(midUserShare -> {
             Share share = this.shareMapper.selectByPrimaryKey(midUserShare.getShareId());
-            if (share.getUserId() != userId){
+            if (!userId.equals(share.getUserId())){
                 shares.add(share);
             }
         });
+        //启动分页
+        PageHelper.startPage(pageNo,pageSize);
         return new PageInfo<>(shares);
+    }
+
+    @Override
+    public int updateContribute(Share share) {
+        share.setUpdateTime(new Date());
+        return this.shareMapper.updateByPrimaryKey(share);
     }
 
 
