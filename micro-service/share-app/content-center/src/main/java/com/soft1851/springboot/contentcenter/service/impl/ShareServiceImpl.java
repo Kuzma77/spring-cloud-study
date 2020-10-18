@@ -133,9 +133,9 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public Share auditStatusById(Integer id,AuditStatusDto auditStatusDto) {
+    public Share auditStatusById(AuditStatusDto auditStatusDto) {
         //1、查询share是否存在，不存在或者当前aduit_status ！= NOT_YET,那么抛异常
-        Share share = this.shareMapper.selectByPrimaryKey(id);
+        Share share = this.shareMapper.selectByPrimaryKey(auditStatusDto.getId());
         if (share == null){
             throw new  IllegalArgumentException("参数非法！该分享不存在");
         }
@@ -174,12 +174,13 @@ public class ShareServiceImpl implements ShareService {
 
     @Override
     public PageInfo<Share> queryMyContribute(Integer pageNo, Integer pageSize, Integer userId) {
-        //启动分页
-        PageHelper.startPage(pageNo,pageSize);
         //构造查询实例
         Example example = new Example(Share.class);
+        example.setOrderByClause("id DESC");
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("userId",userId);
+        //启动分页
+        PageHelper.startPage(pageNo,pageSize);
         return new PageInfo<>(this.shareMapper.selectByExample(example));
     }
 
@@ -260,9 +261,26 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public int updateContribute(Share share) {
+    public int updateContribute(UpdateShareDto updateShareDto) {
+        Share share = this.shareMapper.selectByPrimaryKey(updateShareDto.getShareId());
         share.setUpdateTime(new Date());
+        share.setTitle(updateShareDto.getTitle());
+        share.setIsOriginal(updateShareDto.getIsOriginal());
+        share.setAuthor(updateShareDto.getAuthor());
+        share.setCover(updateShareDto.getCover());
+        share.setSummary(updateShareDto.getSummary());
+        share.setPrice(updateShareDto.getPrice());
+        share.setDownloadUrl(updateShareDto.getDownloadUrl());
+        share.setReason(updateShareDto.getReason());
         return this.shareMapper.updateByPrimaryKey(share);
+    }
+
+    @Override
+    public List<Share> QueryNotYetShares() {
+        Example example = new Example(Share.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("auditStatus","NOT_YET");
+        return this.shareMapper.selectByExample(example);
     }
 
 

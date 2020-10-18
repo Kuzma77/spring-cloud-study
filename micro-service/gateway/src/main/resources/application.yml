@@ -34,6 +34,11 @@ spring:
           predicates: # 断言，路径相匹配的进行路由
             - Path=/log/**
             - Before=2028-01-20T17:42:47.789-07:00[America/Denver]
+        - id: path_route4
+          uri: lb://content-center
+          predicates: # 断言，路径相匹配的进行路由
+            - Path=/admin/**
+            - Before=2028-01-20T17:42:47.789-07:00[America/Denver]
 #      routes:
 #        - id: before_route
 #          uri: lb://user-center

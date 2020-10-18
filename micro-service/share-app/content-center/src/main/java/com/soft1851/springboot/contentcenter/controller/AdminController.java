@@ -22,9 +22,9 @@ public class AdminController {
 
     private final ShareService shareService;
 
-    @PutMapping(value = "/shares/audit/{id}")
+    @PostMapping(value = "/shares/audit")
     @ApiOperation(value = "修改状态", notes = "修改状态")
-    public Share updateAuditStatus(@PathVariable Integer id, @RequestBody AuditStatusDto auditStatusDto){
-         return this.shareService.auditStatusById(id,auditStatusDto);
+    public Share updateAuditStatus(@RequestBody AuditStatusDto auditStatusDto){
+         return this.shareService.auditStatusById(auditStatusDto);
     }
 }

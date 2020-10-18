@@ -102,7 +102,13 @@ public class ShareController {
 
     @PostMapping(value = "/update/contribute")
     @ApiOperation(value = "编辑我的兑换",notes = "编辑我的兑换")
-    public int updateContribute(@RequestBody Share share){
-        return this.shareService.updateContribute(share);
+    public int updateContribute(@RequestBody UpdateShareDto updateShareDto){
+        return this.shareService.updateContribute(updateShareDto);
+    }
+
+    @GetMapping(value = "/query/notYet")
+    @ApiOperation(value = "查询待审核分享",notes = "查询待审核分享")
+    public List<Share> QueryNotYetShares(){
+        return this.shareService.QueryNotYetShares();
     }
 }

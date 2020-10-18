@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AuditStatusDto {
+    private Integer id;
 
     private AuditStatusEnum auditStatusEnum;
 

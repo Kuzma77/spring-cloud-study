@@ -1,10 +1,7 @@
 package com.soft1851.springboot.contentcenter.service;
 
 import com.github.pagehelper.PageInfo;
-import com.soft1851.springboot.contentcenter.domain.dto.AuditStatusDto;
-import com.soft1851.springboot.contentcenter.domain.dto.ContributeShareDto;
-import com.soft1851.springboot.contentcenter.domain.dto.ExchangeDto;
-import com.soft1851.springboot.contentcenter.domain.dto.ShareDto;
+import com.soft1851.springboot.contentcenter.domain.dto.*;
 import com.soft1851.springboot.contentcenter.domain.entity.Share;
 import com.soft1851.springboot.contentcenter.mapper.ShareMapper;
 import lombok.RequiredArgsConstructor;
@@ -49,11 +46,10 @@ public interface ShareService {
     /**
      *
      * 更新状态
-     * @param id
      * @param auditStatusDto
      * @return
      */
-    Share auditStatusById(Integer id,AuditStatusDto auditStatusDto);
+    Share auditStatusById(AuditStatusDto auditStatusDto);
 
     /**
      * 根据用户查询我的投稿列表
@@ -84,10 +80,15 @@ public interface ShareService {
 
     /**
      * 编辑投稿
-     * @param shareDto
+     * @param updateShareDto
      * @return
      */
-    int updateContribute(Share share);
+    int updateContribute(UpdateShareDto updateShareDto);
 
 
+    /**
+     * 获取待审核分享列表
+     * @return
+     */
+    List<Share> QueryNotYetShares();
 }
